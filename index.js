@@ -38,46 +38,12 @@ app.get("/api", async (req, res) => {
         }
     });
     await browser.close();
-    res.send(await pdf);
+    res.send(pdf);
   } catch (err) {
     console.error(err);
     return null;
   }
 });
-
-async function handleRequest(recordId:any){
-  let options = {};
-
-    if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
-        options = {
-        args: [...chromeService.args, "--hide-scrollbars", "--disable-web-security"],
-        defaultViewport: chromeService.defaultViewport,
-        executablePath: await chromeService.executablePath,
-        headless: true,
-        ignoreHTTPSErrors: true,
-        };
-    }else{
-        options = {headless: true}
-    }
-    console.log(options,)
-    const browser = await puppeteerService.launch(options);
-    const page = await browser.newPage();
-    const config = useRuntimeConfig()
-    const host = config.public.hostUrl;
-    await page.goto(`${host}/detailview/${recordId}`,{waitUntil: 'networkidle0'}); 
-    const pdf = await page.pdf({
-        format:"LETTER",
-        printBackground:true,
-        margin: {
-        left:10,
-        right:15,
-        top:10,
-        bottom:10
-        }
-    });
-    await browser.close();
-    return pdf;
-}
 
 app.listen(process.env.PORT || 3000, () => {
   console.log("Server started");
