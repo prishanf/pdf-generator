@@ -26,7 +26,7 @@ app.get("/api", async (req, res) => {
   try {
     let browser = await puppeteer.launch(options);
     let page = await browser.newPage();
-    await page.goto(`https://muv-nuxt-app.vercel.app/detailview/${recordId}`,{waitUntil: 'networkidle0'}); 
+    await page.goto(`https://muv-nuxt-app.vercel.app/detailview/a0K7F000029gcrXUAQ`,{waitUntil: 'networkidle0'}); 
     const pdf = await page.pdf({
         format:"LETTER",
         printBackground:true,
